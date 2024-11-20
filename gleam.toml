@@ -1,4 +1,4 @@
-name = "deque"
+name = "gleam_deque"
 version = "1.0.0"
 gleam = ">= 1.0.0"
 licences = ["Apache-2.0"]

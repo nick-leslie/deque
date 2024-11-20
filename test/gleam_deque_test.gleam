@@ -1,4 +1,4 @@
-import deque
+import gleam/deque
 import gleam/int
 import gleam/list
 import gleam/pair

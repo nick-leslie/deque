@@ -4,10 +4,10 @@
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/deque/)
 
 ```sh
-gleam add deque@1
+gleam add gleam_deque@1
 ```
 ```gleam
-import deque
+import gleam/deque
 
 pub fn main() {
   let letters = 
