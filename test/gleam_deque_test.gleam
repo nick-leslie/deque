@@ -5,6 +5,17 @@ import gleam/pair
 import gleeunit
 import gleeunit/should
 
+@target(erlang)
+const recursion_test_cycles = 1_000_000
+
+// JavaScript engines crash when exceeding a certain stack size:
+//
+// - Chrome 106 and NodeJS V16, V18, and V19 crash around 10_000+
+// - Firefox 106 crashes around 35_000+.
+// - Safari 16 crashes around 40_000+.
+@target(javascript)
+const recursion_test_cycles = 40_000
+
 pub fn main() {
   gleeunit.main()
 }
@@ -57,8 +68,9 @@ pub fn push_back_test() {
   [1, 2]
   |> deque.from_list
   |> deque.push_back(3)
+  |> deque.push_back(4)
   |> deque.to_list
-  |> should.equal([1, 2, 3])
+  |> should.equal([1, 2, 3, 4])
 
   deque.new()
   |> deque.push_back(1)
@@ -67,6 +79,18 @@ pub fn push_back_test() {
   |> deque.to_list
   |> should.equal([1, 2, 3])
 }
+
+pub fn fold_test() {
+  [1, 2, 3]
+  |> deque.from_list
+  |> deque.fold([], fn(acc, x) { [x, ..acc] })
+  |> should.equal([3, 2, 1])
+
+  // TCO test
+  list.range(0, recursion_test_cycles)
+  |> list.fold([], fn(acc, x) { [x, ..acc] })
+}
+
 
 pub fn push_front_test() {
   [2, 3]

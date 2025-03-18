@@ -134,6 +134,31 @@ pub fn push_front(onto deque: Deque(a), this item: a) -> Deque(a) {
   Deque(in: deque.in, out: [item, ..deque.out])
 }
 
+/// Reduces a queue of elements into a single value by calling a given function
+/// on each element, going from left to right.
+///
+/// `fold([1, 2, 3], 0, add)` is the equivalent of
+/// `add(add(add(0, 1), 2), 3)`.
+///
+/// This function runs in linear time.
+///
+pub fn fold(
+  over list: Deque(a),
+  from initial: acc,
+  with fun: fn(acc, a) -> acc,
+) -> acc {
+  case list.out {
+    [] -> {
+      case list.in {
+        [] -> initial
+        [first, ..rest] -> fold(Deque(..list,in:rest), fun(initial, first), fun)
+      }
+    }
+    [first, ..rest] -> fold(Deque(..list,out:rest), fun(initial, first), fun)
+  }
+}
+
+
 /// Gets the last element from the deque, returning the
 /// element and a new deque without that element.
 ///
